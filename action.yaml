@@ -20,8 +20,17 @@ inputs:
 
 outputs:
   image_id:
-    description: "ID of the image"
+    description: 'ID of the image'
     value: ${{ steps.build_and_push.outputs.imageid }}
+  image_digest:
+    description: 'Digest of the image'
+    value: ${{ steps.build_and_push.digest }}
+  image_tags:
+    description: 'A newline seperated list of the image labels and tags'
+    value: |
+      ${{ steps.ecr-login.outputs.registry }}/${{ inputs.repository_name }}:${{ steps.tags.sha_short }}
+      ${{ steps.ecr-login.outputs.registry }}/${{ inputs.repository_name }}:${{ steps.tags.branch }}
+      ${{ steps.ecr-login.outputs.registry }}/${{ inputs.repository_name }}:latest
 
 runs:
   using: "composite"
