@@ -20,4 +20,4 @@ jobs:
             aws_secret_key: ${{ secrets.PUBLIC_PUSH_ECR_AWS_SECRET }}
             dockerfile_context: '.'
             repository_name: workflow-test
-            auth_token: ${{ GITHUB_TOKEN }}
+            auth_token: ${{ secrets.GITHUB_TOKEN }}
