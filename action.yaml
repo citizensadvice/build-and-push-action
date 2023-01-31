@@ -1,0 +1,75 @@
+name: 'Build and push to ECR'
+description: 'Build and push a Docker image to ERC, written for CA repositories.'
+inputs:
+  aws_access_key:
+    description: 'AWS access key ID'
+    required: true
+  aws_secret_key:
+    description: 'AWS secret access key'
+    required: true
+  dockerfile_context: 
+    description: 'The context of the Dockerfile. Defaults to root of project.'
+    required: false
+    default: '.'
+  repository_name:
+    description: 'The name of the project. Will be used as the name of the Docker image'
+    required: true
+  auth_token:
+    description: 'A token to pull the repository. Usually GITHUB_TOKEN'
+    required: true
+
+outputs:
+  image_id:
+    description: "ID of the image"
+    value: ${{ steps.build_and_push.outputs.imageid }}
+
+runs:
+  using: "composite"
+  steps:
+      - uses: actions/checkout@v3
+        with:
+          token: ${{ inputs.auth_token }}
+
+      - uses: docker/setup-buildx-action@v3
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v1-node16
+        with:
+          aws-access-key-id: ${{ inputs.aws_access_key }}
+          aws-secret-access-key: ${{ inputs.aws_secret_key }}
+          aws-region: eu-west-1
+
+      - name: ECR login
+        id: ecr-login
+        uses: aws-actions/amazon-ecr-login@v1
+
+      - name: Set Tags
+        shell: bash
+        id: tags
+        run: |
+          echo "sha_short=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
+          echo "branch=$(git symbolic-ref HEAD 2> /dev/null | awk 'BEGIN{FS="/"} {print $NF}')" >> GITHUB_OUTPUT
+
+      - name: Check if image already exists
+        shell: bash
+        run: |
+          if [[ $(aws ecr describe-images --repository-name {{ inputs.repository_name }} --image-ids=imageTag=${{ steps.tags.sha_short }}) ]]
+          then
+            echo "IMAGE_EXISTS=true" >> $GITHUB_ENV
+          else
+            echo "IMAGE_EXISTS=false" >> $GITHUB_ENV
+          fi
+
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v3
+        if: env.IMAGE_EXISTS == 'false'
+        id: build_and_push
+        with:
+          context: .
+          push: true
+          cache-from: type=gha,token=${{ inputs.auth_token }}
+          cache-to: type=gha,token=${{ inputs.auth_token }},mode=max
+          tags: |
+            ${{ steps.ecr-login.outputs.registry }}/${{ inputs.repository_name }}:${{ steps.tags.sha_short }}
+            ${{ steps.ecr-login.outputs.registry }}/${{ inputs.repository_name }}:${{ steps.tags.branch }}
+            ${{ steps.ecr-login.outputs.registry }}/${{ inputs.repository_name }}:latest
