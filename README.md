@@ -47,7 +47,7 @@ jobs:
             aws_secret_key: ${{ secrets.PUBLIC_PUSH_ECR_AWS_SECRET }}
             dockerfile_context: '.'
             repository_name: <PROJECT NAME HERE>
-            auth_token: ${{ GITHUB_TOKEN }}
+            auth_token: ${{ secrets.GITHUB_TOKEN }}
 ```
 
 The `on` conditions and branch matching can be changes to whatever suites your team best. If you require assistance implementing a custom solution, please send a message to `#devops-support` in Slack.
