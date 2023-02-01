@@ -12,7 +12,7 @@ inputs:
     required: false
     default: '.'
   repository_name:
-    description: 'The name of the project. Will be used as the name of the Docker image'
+    description: 'The name of the image repository. Will be used as the name of the Docker image'
     required: true
   auth_token:
     description: 'A token to pull the repository. Usually GITHUB_TOKEN'
@@ -49,20 +49,12 @@ runs:
         id: ecr-login
         uses: aws-actions/amazon-ecr-login@v1
         with:
-          aws-region: us-east-1
           registry-type: public
-
-      - name: Set Tags
-        shell: bash
-        id: tags
-        run: |
-          echo "sha_short=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
-          echo "branch=$(git symbolic-ref HEAD 2> /dev/null | awk 'BEGIN{FS="/"} {print $NF}')" >> $GITHUB_OUTPUT
 
       - name: Check if image already exists
         shell: bash
         run: |
-          if [[ $(aws ecr describe-images --repository-name {{ inputs.repository_name }} --image-ids=imageTag=${{ steps.tags.outputs.sha_short }}) ]]
+          if [[ $(aws ecr describe-images --repository-name {{ inputs.repository_name }} --image-ids=imageTag=${{ github.sha }}) ]]
           then
             echo "IMAGE_EXISTS=true" >> $GITHUB_ENV
           else
