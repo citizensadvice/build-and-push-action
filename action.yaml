@@ -57,7 +57,7 @@ runs:
         id: tags
         run: |
           echo "sha_short=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
-          echo "branch=$(git symbolic-ref HEAD 2> /dev/null | awk 'BEGIN{FS="/"} {print $NF}')" >> GITHUB_OUTPUT
+          echo "branch=$(git symbolic-ref HEAD 2> /dev/null | awk 'BEGIN{FS="/"} {print $NF}')" >> $GITHUB_OUTPUT
 
       - name: Check if image already exists
         shell: bash
@@ -76,8 +76,9 @@ runs:
         with:
           context: .
           push: true
-          cache-from: type=gha,token=${{ inputs.auth_token }}
-          cache-to: type=gha,token=${{ inputs.auth_token }},mode=max
+          # Future work: enable cache, see https://github.com/moby/buildkit#github-actions-cache-experimental
+          # cache-from: type=gha,token=${{ inputs.auth_token }}
+          # cache-to: type=gha,token=${{ inputs.auth_token }},mode=max
           tags: |
             ${{ steps.ecr-login.outputs.registry }}/${{ inputs.repository_name }}:${{ github.sha }}
             ${{ steps.ecr-login.outputs.registry }}/${{ inputs.repository_name }}:${{ github.ref_name }}
