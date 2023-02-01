@@ -17,7 +17,7 @@ Please note that the ECR repository must be created beforehand. Repository creat
 | `aws_access_key` | Access key for a user with permission to create and update images in the CA public ECR |
 | `aws_secret_key` | Secret key for the access key |
 | `dockerfile_context` | The path to the Dockerfile context. Will default to the root of the project |
-| `repository_name` | The name of the project. Is used to name the docker image. Must may contain lowercase and uppercase letters, digits, underscores, periods and dashes only. |
+| `repository_name` | The name of the image repository. Is used to name the docker image. Must may contain lowercase and uppercase letters, digits, underscores, periods and dashes only. |
 | `auth_token` | A token with permission to clone the repository. Will usually be GITHUB_TOKEN |
 
 As all CA repositories have access to a `PUBLIC_PUSH_ECR_AWS_KEY` and `PUBLIC_PUSH_ECR_AWS_SECRET`, they can be used without any issues.
@@ -43,7 +43,7 @@ jobs:
     runs-on: ubuntu-22.04
     steps:
       - name: Build and push to ECR
-        uses: citizensadvice/build-and-push-action@main
+        uses: citizensadvice/build-and-push-action@v1
         with:
             aws_access_key: ${{ secrets.PUBLIC_PUSH_ECR_AWS_KEY }}
             aws_secret_key: ${{ secrets.PUBLIC_PUSH_ECR_AWS_SECRET }}
