@@ -4,7 +4,7 @@ Build and push a Docker image to the CA public ECR in one action.
 
 By default it will push the image with three different tags:
 
-- **Short commit sha** as documented [here](https://git-scm.com/docs/git-rev-parse#Documentation/git-rev-parse.txt---shortlength). e.g. `99da3338`
+- **Commit sha** as documented [here](https://git-scm.com/docs/git-rev-parse#Documentation/git-rev-parse.txt---shortlength). e.g. `99da3338`
 - **Branch or Tag name**, e.g. `main`, `v1.0.0`
 - **latest**
 
@@ -48,7 +48,7 @@ jobs:
             aws_access_key: ${{ secrets.PUBLIC_PUSH_ECR_AWS_KEY }}
             aws_secret_key: ${{ secrets.PUBLIC_PUSH_ECR_AWS_SECRET }}
             dockerfile_context: '.'
-            repository_name: <PROJECT NAME HERE>
+            repository_name: <REPOSITORY NAME HERE>
             auth_token: ${{ secrets.GITHUB_TOKEN }}
 ```
 
