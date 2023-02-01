@@ -27,7 +27,7 @@ outputs:
     value: ${{ steps.build_and_push.digest }}
   image_tags:
     description: 'A CSV list of the image labels and tags'
-    value: ${{ steps.ecr-login.outputs.registry }}/${{ inputs.repository_name }}:${{ steps.tags.outputs.sha_short }},${{ steps.ecr-login.outputs.registry }}/${{ inputs.repository_name }}:${{ steps.tags.outputs.branch }},${{ steps.ecr-login.outputs.registry }}/${{ inputs.repository_name }}:latest
+    value: ${{ steps.ecr-login.outputs.registry }}/${{ inputs.repository_name }}:${{ github.sha }},${{ steps.ecr-login.outputs.registry }}/${{ inputs.repository_name }}:${{ github.ref_name }},${{ steps.ecr-login.outputs.registry }}/${{ inputs.repository_name }}:latest
 
 runs:
   using: "composite"
@@ -79,6 +79,6 @@ runs:
           cache-from: type=gha,token=${{ inputs.auth_token }}
           cache-to: type=gha,token=${{ inputs.auth_token }},mode=max
           tags: |
-            ${{ steps.ecr-login.outputs.registry }}/${{ inputs.repository_name }}:${{ steps.tags.outputs.sha_short }}
-            ${{ steps.ecr-login.outputs.registry }}/${{ inputs.repository_name }}:${{ steps.tags.outputs.branch }}
+            ${{ steps.ecr-login.outputs.registry }}/${{ inputs.repository_name }}:${{ github.sha }}
+            ${{ steps.ecr-login.outputs.registry }}/${{ inputs.repository_name }}:${{ github.ref_name }}
             ${{ steps.ecr-login.outputs.registry }}/${{ inputs.repository_name }}:latest
