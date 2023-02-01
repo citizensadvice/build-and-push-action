@@ -8,6 +8,8 @@ By default it will push the image with three different tags:
 - **Branch or Tag name**, e.g. `main`, `v1.0.0`
 - **latest**
 
+Please note that the ECR repository must be created beforehand. Repository creation is not currently within the scope of this Action.
+
 ## Inputs
 
 | Input | Usage |
@@ -41,7 +43,7 @@ jobs:
     runs-on: ubuntu-22.04
     steps:
       - name: Build and push to ECR
-        uses: citizensadvice/build-and-push-action@v1.0.0
+        uses: citizensadvice/build-and-push-action@main
         with:
             aws_access_key: ${{ secrets.PUBLIC_PUSH_ECR_AWS_KEY }}
             aws_secret_key: ${{ secrets.PUBLIC_PUSH_ECR_AWS_SECRET }}
@@ -51,5 +53,3 @@ jobs:
 ```
 
 The `on` conditions and branch matching can be changes to whatever suites your team best. If you require assistance implementing a custom solution, please send a message to `#devops-support` in Slack.
-
-For the action version (v`1.0.0` in the example) please use the latest production-ready release [here](https://github.com/citizensadvice/build-and-push-action/releases)
