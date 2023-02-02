@@ -12,15 +12,24 @@ Please note that the ECR repository must be created beforehand. Repository creat
 
 ## Inputs
 
-| Input | Usage |
-|---|---|
-| `aws_access_key` | Access key for a user with permission to create and update images in the CA public ECR |
-| `aws_secret_key` | Secret key for the access key |
-| `dockerfile_context` | The path to the Dockerfile context. Will default to the root of the project |
-| `repository_name` | The name of the image repository. Is used to name the docker image. Must may contain lowercase and uppercase letters, digits, underscores, periods and dashes only. |
-| `auth_token` | A token with permission to clone the repository. Will usually be GITHUB_TOKEN |
+| Input | Description | Required | Default |
+|---|---|---|---|
+| `aws_access_key` | Access key for a user with permission to create and update images in the CA public ECR | Yes | |
+| `aws_secret_key` | Secret key for the access key | Yes | |
+| `dockerfile_context` | The path to the Dockerfile context. Will default to the root of the project | No | `.`
+| `repository_name` | The name of the image repository. Is used to name the docker image. Must may contain lowercase and uppercase letters, digits, underscores, periods and dashes only. | Yes | |
+| `auth_token` | A token with permission to clone the repository. Will usually be GITHUB_TOKEN | Yes | |
 
 As all CA repositories have access to a `PUBLIC_PUSH_ECR_AWS_KEY` and `PUBLIC_PUSH_ECR_AWS_SECRET`, they can be used without any issues.
+
+## Outputs
+
+| Name | Description |
+|---|---|
+| `image_id` | The ID of the built image |
+| `image_digest` | The digest of the built image |
+| `image_tags` | A CSV list of the image labels and tags |
+
 
 ## Example usage
 
