@@ -4,8 +4,8 @@ Build and push a Docker image to the CA public ECR in one action.
 
 By default it will push the image with three different tags:
 
-- **Commit sha** as documented [here](https://git-scm.com/docs/git-rev-parse#Documentation/git-rev-parse.txt---shortlength). e.g. `99da3338`
-- **Branch or Tag name**, e.g. `main`, `v1.0.0`
+- **Commit sha** as documented [here](https://git-scm.com/docs/git-rev-parse#Documentation/git-rev-parse.txt---shortlength). e.g. `e1b18d15d2b5558d275920ab5b5650a5c36bb1ee`
+- **Branch and/or Tag name**, e.g. `main`, `v1.0.0`
 - **latest**
 
 Please note that the ECR repository must be created beforehand. Repository creation is not currently within the scope of this Action.
