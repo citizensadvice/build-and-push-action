@@ -4,7 +4,7 @@ Build and push a Docker image to the CA public ECR in one action. This action ca
 
 By default it will push the image with three different tags:
 
-- **Commit sha** as documented [here](https://git-scm.com/docs/git-rev-parse#Documentation/git-rev-parse.txt---shortlength). e.g. `e1b18d15d2b5558d275920ab5b5650a5c36bb1ee`
+- **Commit sha**, e.g. `e1b18d15d2b5558d275920ab5b5650a5c36bb1ee`
 - **Branch** or **Tag** on push events or **PR Source Branch** for pull request events, e.g. `main`, `v1.0.0`, `feature`
 - **latest**
 
