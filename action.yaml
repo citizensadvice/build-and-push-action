@@ -28,10 +28,24 @@ outputs:
   image_tags:
     description: 'A CSV list of the image tags'
     value: ${{ github.sha }},${{ github.head_ref || github.ref_name }},latest
+  multiarch_build:
+    description: 'Build a `linux/arm64` image as well as `linux/amd64`. Defaults to enabled'
+    required: false
+    default: 'enabled'
 
 runs:
   using: "composite"
   steps:
+      - name: Configure Multi-arch Build
+        id: multiarch
+        shell: bash
+        run: |
+          if [[ "${{ inputs.multiarch_build }}" == "false" ]] ; then
+            echo "multiarch=linux/amd64,linux/arm64" >> $GITHUB_OUTPUT
+          else
+            echo "multiarch=linux/amd64" >> $GITHUB_OUTPUT
+          fi
+
       - uses: actions/checkout@v3
         with:
           token: ${{ inputs.auth_token }}
@@ -56,11 +70,13 @@ runs:
       - name: Check if image already exists
         shell: bash
         run: |
-          if [[ $(aws ecr-public describe-images --region us-east-1 --repository-name ${{ inputs.repository_name }} --image-ids=imageTag=${{ github.sha }}) ]]
-          then
-            echo "IMAGE_EXISTS=true" >> $GITHUB_ENV
+          if [[ "${{ inputs.multiarch_build }}" == "enabled" ]] ; then
+            echo "multiarch=linux/amd64,linux/arm64" >> $GITHUB_OUTPUT
+          elif [[ "${{ inputs.multiarch_build }}" == "disabled" ]] ; then
+            echo "multiarch=linux/amd64" >> $GITHUB_OUTPUT
           else
-            echo "IMAGE_EXISTS=false" >> $GITHUB_ENV
+            echo "Input `multiarch_build` not set correctly. Options are 'enabled' or 'disabled'"
+            exit 1
           fi
 
       - name: Build and push Docker image
