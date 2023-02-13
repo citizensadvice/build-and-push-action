@@ -55,7 +55,7 @@ runs:
       - uses: docker/setup-qemu-action@v2
       - uses: docker/setup-buildx-action@v2.4.0
         with:
-          platforms: linux/amd64,linux/arm64
+          platforms: ${{ steps.multiarch.outputs.multiarch }}
 
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v1-node16
@@ -73,13 +73,11 @@ runs:
       - name: Check if image already exists
         shell: bash
         run: |
-          if [[ "${{ inputs.multiarch_build }}" == "enabled" ]] ; then
-            echo "multiarch=linux/amd64,linux/arm64" >> $GITHUB_OUTPUT
-          elif [[ "${{ inputs.multiarch_build }}" == "disabled" ]] ; then
-            echo "multiarch=linux/amd64" >> $GITHUB_OUTPUT
+          if [[ $(aws ecr-public describe-images --region eu-west-1 --repository-name ${{ inputs.repository_name }} --image-ids=imageTag=${{ github.sha }}) ]]
+          then
+            echo "IMAGE_EXISTS=true" >> $GITHUB_ENV
           else
-            echo "Input `multiarch_build` not set correctly. Options are 'enabled' or 'disabled'"
-            exit 1
+            echo "IMAGE_EXISTS=false" >> $GITHUB_ENV
           fi
 
       - name: Build and push Docker image
@@ -92,7 +90,7 @@ runs:
           # Future work: enable cache, see https://github.com/moby/buildkit#github-actions-cache-experimental
           # cache-from: type=gha,token=${{ inputs.auth_token }}
           # cache-to: type=gha,token=${{ inputs.auth_token }},mode=max
-          platforms: linux/amd64,linux/arm64
+          platforms: ${{ steps.multiarch.outputs.multiarch }}
           tags: |
             ${{ steps.ecr-login.outputs.registry }}/citizensadvice/${{ inputs.repository_name }}:${{ github.sha }}
             ${{ steps.ecr-login.outputs.registry }}/citizensadvice/${{ inputs.repository_name }}:${{ github.head_ref || github.ref_name }}
