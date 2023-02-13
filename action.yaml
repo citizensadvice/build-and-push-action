@@ -18,7 +18,7 @@ inputs:
     description: 'A token to pull the repository. Usually GITHUB_TOKEN'
     required: true
   multiarch_build:
-    description: 'Build a `linux/arm64` image as well as `linux/amd64`. Defaults to enabled'
+    description: 'Build a `linux/arm64` image as well as `linux/amd64`. Defaults to 'disabled''
     required: false
     default: 'disabled'
 
