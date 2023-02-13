@@ -17,6 +17,10 @@ inputs:
   auth_token:
     description: 'A token to pull the repository. Usually GITHUB_TOKEN'
     required: true
+  multiarch_build:
+    description: 'Build a `linux/arm64` image as well as `linux/amd64`. Defaults to enabled'
+    required: false
+    default: 'disabled'
 
 outputs:
   image_id:
@@ -28,10 +32,6 @@ outputs:
   image_tags:
     description: 'A CSV list of the image tags'
     value: ${{ github.sha }},${{ github.head_ref || github.ref_name }},latest
-  multiarch_build:
-    description: 'Build a `linux/arm64` image as well as `linux/amd64`. Defaults to enabled'
-    required: false
-    default: 'disabled'
 
 runs:
   using: "composite"
