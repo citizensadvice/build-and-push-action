@@ -1,6 +1,6 @@
-# Build & Push To Public ERC
+# Build & Push To Public ECR
 
-Build and push a Docker image to the CA public ECR in one action. This action can only be used on **private** Github repositories. For public repositories, please use [this action.](https://github.com/citizensadvice/build-and-push-private-action)
+Build and push a Docker image to the CA public ECR in one action. This action can only be used on **private** Github repositories. For public repositories, please use [this action.](https://github.com/citizensadvice/build-and-private-ecr-push-action)
 
 By default it will push the image with three different tags:
 
@@ -15,7 +15,7 @@ Please note that the ECR repository must be created beforehand. Repository creat
 | Input | Description | Required | Default |
 |---|---|---|---|
 | `aws_access_key` | Access key for a user with permission to create and update images in the CA public ECR | Yes | |
-| `aws_secret_key` | Secret key for the access key | Yes | |
+| `aws_secret_key` | Secret key for the git statusaccess key | Yes | |
 | `dockerfile_context` | The path to the Dockerfile context. Will default to the root of the project | No | `.`
 | `repository_name` | The name of the image repository. Is used to name the docker image. Must may contain lowercase and uppercase letters, digits, underscores, periods and dashes only. | Yes | |
 | `auth_token` | A token with permission to clone the repository. Will usually be GITHUB_TOKEN | Yes | |
@@ -55,7 +55,7 @@ jobs:
     runs-on: ubuntu-22.04
     steps:
       - name: Build and push to ECR
-        uses: citizensadvice/build-and-push-action@v1
+        uses: citizensadvice/build-and-private-ecr-push-action@v1
         with:
             aws_access_key: ${{ secrets.PUBLIC_PUSH_ECR_AWS_KEY }}
             aws_secret_key: ${{ secrets.PUBLIC_PUSH_ECR_AWS_SECRET }}
