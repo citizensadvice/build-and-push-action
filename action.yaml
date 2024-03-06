@@ -71,7 +71,7 @@ runs:
         registry-type: public
 
     - name: Build and push Docker image
-      uses: docker/build-push-action@v3
+      uses: docker/build-push-action@v5
       if: env.IMAGE_EXISTS == 'false'
       id: build_and_push
       with:
