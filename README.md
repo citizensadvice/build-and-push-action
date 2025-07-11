@@ -1,5 +1,8 @@
 # Build & Push To Public ECR
 
+> [!IMPORTANT]
+> This repository has been archived and will no longer be maintained. 
+
 Build and push a Docker image to the CA public ECR in one action. This action can only be used on **private** Github repositories. For public repositories, please use [this action.](https://github.com/citizensadvice/build-and-private-ecr-push-action)
 
 By default it will push the image with three different tags:
