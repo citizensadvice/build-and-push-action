@@ -1,6 +1,6 @@
 # Build & Push To Public ECR
 
-Build and push a Docker image to the CA public ECR in one action. This action can only be used on **private** Github repositories. For public repositories, please use [this action.](https://github.com/citizensadvice/build-and-private-ecr-push-action)
+Build and push a Docker image to the CA public ECR in one action. For private ECR repositories, please use [this action.](https://github.com/citizensadvice/build-and-private-ecr-push-action)
 
 By default it will push the image with three different tags:
 
@@ -12,14 +12,14 @@ Please note that the ECR repository must be created beforehand. Repository creat
 
 ## Inputs
 
-| Input | Description | Required | Default |
-|---|---|---|---|
-| `aws_access_key` | Access key for a user with permission to create and update images in the CA public ECR | Yes | |
-| `aws_secret_key` | Secret key for the access key | Yes | |
-| `dockerfile_context` | The path to the Dockerfile context. Will default to the root of the project | No | `.`
-| `repository_name` | The name of the image repository. Is used to name the docker image. Must may contain lowercase and uppercase letters, digits, underscores, periods and dashes only. | Yes | |
-| `auth_token` | A token with permission to clone the repository. Will usually be GITHUB_TOKEN | Yes | |
-| `multiarch_build` | Allow for multi-arch builds. When `'disabled'` only builds `linux/amd64` images, when `'enabled'` also builds `linux/arm64` images | No | `'disabled'` |
+| Input                | Description                                                                                                                                                         | Required | Default      |
+| -------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------- | ------------ |
+| `aws_access_key`     | Access key for a user with permission to create and update images in the CA public ECR                                                                              | Yes      |              |
+| `aws_secret_key`     | Secret key for the access key                                                                                                                                       | Yes      |              |
+| `dockerfile_context` | The path to the Dockerfile context. Will default to the root of the project                                                                                         | No       | `.`          |
+| `repository_name`    | The name of the image repository. Is used to name the docker image. Must may contain lowercase and uppercase letters, digits, underscores, periods and dashes only. | Yes      |              |
+| `auth_token`         | A token with permission to clone the repository. Will usually be GITHUB_TOKEN                                                                                       | Yes      |              |
+| `multiarch_build`    | Allow for multi-arch builds. When `'disabled'` only builds `linux/amd64` images, when `'enabled'` also builds `linux/arm64` images                                  | No       | `'disabled'` |
 
 As all CA repositories have access to a `PUBLIC_PUSH_ECR_AWS_KEY` and `PUBLIC_PUSH_ECR_AWS_SECRET`, they can be used without any issues.
 
@@ -27,12 +27,11 @@ Due to the fact that the action will be running in an `amd64` environment (Also 
 
 ## Outputs
 
-| Name | Description |
-|---|---|
-| `image_id` | The ID of the built image |
-| `image_digest` | The digest of the built image |
-| `image_tags` | A comma seperated list of the image tags |
-
+| Name           | Description                              |
+| -------------- | ---------------------------------------- |
+| `image_id`     | The ID of the built image                |
+| `image_digest` | The digest of the built image            |
+| `image_tags`   | A comma seperated list of the image tags |
 
 ## Example usage
 
