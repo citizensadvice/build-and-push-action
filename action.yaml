@@ -52,7 +52,7 @@ runs:
     - uses: actions/checkout@f43a0e5ff2bd294095638e18286ca9a3d1956744
       with:
         token: ${{ inputs.auth_token }}
-    - uses: docker/setup-qemu-action@2b82ce82d56a2a04d2637cd93a637ae1b359c0a7
+    - uses: docker/setup-qemu-action@ce360397dd3f832beb865e1373c09c0e9f86d70a
     - uses: docker/setup-buildx-action@15c905b16b06416d2086efa066dd8e3a35cc7f98
       with:
         platforms: ${{ steps.multiarch.outputs.multiarch }}
