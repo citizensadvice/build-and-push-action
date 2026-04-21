@@ -49,7 +49,7 @@ runs:
           exit 1
         fi
 
-    - uses: actions/checkout@f43a0e5ff2bd294095638e18286ca9a3d1956744
+    - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
       with:
         token: ${{ inputs.auth_token }}
     - uses: docker/setup-qemu-action@ce360397dd3f832beb865e1373c09c0e9f86d70a
